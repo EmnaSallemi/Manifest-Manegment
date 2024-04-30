@@ -1,4 +1,4 @@
-package com.example.KubernetesConfig;
+package com.example.config;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 
 @Service
-public class KubernetesConfigServiceImpl {
+public class KubernetesConfigServiceImpl implements KubernetesConfigService {
     public void configureKubernetesAccess() throws IOException {
         // file path to your KubeConfig
         String kubeConfigPath = System.getenv("HOME") + "/.kube/config";

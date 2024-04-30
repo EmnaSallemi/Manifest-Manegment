@@ -1,6 +1,5 @@
-package com.example.controller;
+package com.example.ListerResource.controller;
 
-import com.example.service.ListerServiceImpl;
 import io.kubernetes.client.openapi.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.ListerResource.service.ListerServiceImpl;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

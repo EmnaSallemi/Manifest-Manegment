@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.ListerResource.controller;
 
 import java.io.FileReader;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.service.CreateService;
+import com.example.ListerResource.service.CreateService;
 
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;

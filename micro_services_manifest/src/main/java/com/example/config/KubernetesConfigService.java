@@ -1,4 +1,4 @@
-package com.example.KubernetesConfig;
+package com.example.config;
 
 import java.io.IOException;
 

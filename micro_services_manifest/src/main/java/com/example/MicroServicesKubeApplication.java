@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.example.controller", "com.example.service"})
+@ComponentScan(basePackages = {})
 
 public class MicroServicesKubeApplication  {
 

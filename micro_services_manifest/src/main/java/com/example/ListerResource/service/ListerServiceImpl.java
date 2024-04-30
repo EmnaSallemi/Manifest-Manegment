@@ -1,8 +1,7 @@
-package com.example.service;
+package com.example.ListerResource.service;
 
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
-import io.kubernetes.client.openapi.Configuration;
 import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.BatchV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
@@ -36,27 +35,27 @@ import io.kubernetes.client.openapi.models.V1StatefulSet;
 import io.kubernetes.client.openapi.models.V1StatefulSetList;
 import io.kubernetes.client.openapi.models.V1StorageClass;
 import io.kubernetes.client.openapi.models.V1StorageClassList;
-import io.kubernetes.client.util.ClientBuilder;
-import io.kubernetes.client.util.KubeConfig;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.config.KubernetesConfigService;
+
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ListerServiceImpl implements ListerService{
+    @Autowired
+    private KubernetesConfigService kubernetesConfigService;
     
 
     @Override
     public List<String> getAllPods() throws FileNotFoundException, IOException, ApiException {
-
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
+        kubernetesConfigService.configureKubernetesAccess();
         CoreV1Api api = new CoreV1Api();
 
         V1PodList podList = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
@@ -70,10 +69,7 @@ public class ListerServiceImpl implements ListerService{
 
     @Override
     public List<String> getAllNamespaces() throws ApiException, FileNotFoundException, IOException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        
+        kubernetesConfigService.configureKubernetesAccess();
         CoreV1Api coreV1Api = new CoreV1Api();
         // List namespaces
         V1NamespaceList namespaceList = coreV1Api.listNamespace(null, null, null, null, null, null, null, null, null, null);
@@ -87,9 +83,7 @@ public class ListerServiceImpl implements ListerService{
 
     @Override
     public List<String> getAllServices() throws FileNotFoundException, IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
+        kubernetesConfigService.configureKubernetesAccess();
 
         CoreV1Api api = new CoreV1Api();
 
@@ -106,10 +100,8 @@ public class ListerServiceImpl implements ListerService{
 
     @Override
     public List<String> getAllDeployments() throws IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        // CoreV1Api api = new CoreV1Api();
+        kubernetesConfigService.configureKubernetesAccess();
+        ApiClient client = io.kubernetes.client.util.Config.defaultClient();
         AppsV1Api api = new AppsV1Api(client);
         V1DeploymentList deploymentList = api.listDeploymentForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
 
@@ -121,10 +113,8 @@ public class ListerServiceImpl implements ListerService{
     }
 
     public List<String> getAllReplicaSets() throws IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        // CoreV1Api api = new CoreV1Api();
+      kubernetesConfigService.configureKubernetesAccess();
+        ApiClient client = io.kubernetes.client.util.Config.defaultClient();
         AppsV1Api api = new AppsV1Api(client);
         V1ReplicaSetList replicaSetList = api.listReplicaSetForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
 
@@ -136,10 +126,8 @@ public class ListerServiceImpl implements ListerService{
     }
 
     public List<String> getAllJobs() throws IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        
+      kubernetesConfigService.configureKubernetesAccess();
+        ApiClient client = io.kubernetes.client.util.Config.defaultClient();        
         BatchV1Api api = new BatchV1Api(client);
         V1JobList jobList = api.listJobForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
 
@@ -151,10 +139,8 @@ public class ListerServiceImpl implements ListerService{
     }
 
     public List<String> getAllNodes() throws IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        
+      kubernetesConfigService.configureKubernetesAccess();
+        ApiClient client = io.kubernetes.client.util.Config.defaultClient();        
         CoreV1Api api = new CoreV1Api(client);
         V1NodeList nodeList = api.listNode(null, null, null, null, null, null, null, null, null, null);
 
@@ -165,10 +151,8 @@ public class ListerServiceImpl implements ListerService{
         return nodeNames;
     }
     public List<String> getAllConfigMaps() throws IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        
+        kubernetesConfigService.configureKubernetesAccess();
+        ApiClient client = io.kubernetes.client.util.Config.defaultClient();        
         CoreV1Api api = new CoreV1Api(client);
         V1ConfigMapList configMapList = api.listConfigMapForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
 
@@ -179,10 +163,8 @@ public class ListerServiceImpl implements ListerService{
         return configMapNames;
     }
     public List<String> getAllIngresses() throws IOException, ApiException {
-        String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        Configuration.setDefaultApiClient(client);
-        
+      kubernetesConfigService.configureKubernetesAccess();
+        ApiClient client = io.kubernetes.client.util.Config.defaultClient();        
         NetworkingV1Api api = new NetworkingV1Api(client);
         V1IngressList ingressList = api.listIngressForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
 

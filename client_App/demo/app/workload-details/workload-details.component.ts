@@ -15,6 +15,22 @@ export class WorkloadDetailsComponent implements OnInit {
   selectedManifestTypes: string[] = [];
   podNames: string[];
   namespaceNames: string[];
+  deploymentNames:string[];
+  statefulsetNames:string[];
+  serviceNames:string[];
+  replicasetNames:string[];
+  jobsNames:string[];
+  nodesNames:string[];
+  endpointsNames:string[];
+  configmapsNames:string[];
+  ingressNames:string[];
+  daemonsetNames:string[];
+  pvcNames:string[];
+  scNames:string[];
+  
+
+
+
   public network: any;
   public nodes: DataSet<any>;
   public edges: DataSet<any>;
@@ -28,7 +44,22 @@ export class WorkloadDetailsComponent implements OnInit {
 
   options = [
     { value: 'pod', label: 'Pod' },
-    { value: 'namespace', label: 'Namespace' }
+    { value: 'namespace', label: 'Namespace' },
+    { value: 'deployment', label: 'Deployment' },
+    { value: 'statefulset', label: 'Statefulset' },
+    { value: 'service', label: 'Service' },
+    { value: 'replicaset', label: 'Replicaset' },
+    { value: 'jobs', label: 'Jobs' },
+    { value: 'nodes', label: 'Nodes' },
+    { value: 'endpoints', label: 'Endpoints' },
+    { value: 'configmaps', label: 'Configmap' },
+    { value: 'ingress', label: 'Ingress' }, 
+    { value: 'daemonSet', label: 'Daemonset' },
+    { value: 'pvc', label: 'PVC' },
+    { value: 'sc', label: 'SC' },
+  
+    
+
   ];
 
   selectChoice(choice: string) {

@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.ListerResource.service;
 
 import java.io.FileReader;
 import java.io.IOException;
