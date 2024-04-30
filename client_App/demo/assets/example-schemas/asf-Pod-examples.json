@@ -1,0 +1,74 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Kubernetes Pod",
+    "type": "object",
+    "properties": {
+      "apiVersion": {
+        "type": "string",
+        "const": "v1",
+        "description": "The API version for the Kubernetes Pod"
+      },
+      "kind": {
+        "type": "string",
+        "const": "Pod",
+        "description": "The kind of Kubernetes resource (Pod)"
+      },
+      "metadata": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the Pod"
+          },
+          "labels": {
+            "type": "object",
+            "description": "Labels attached to the Pod"
+          }
+        },
+        "required": ["name"],
+        "additionalProperties": false
+      },
+      "spec": {
+        "type": "object",
+        "properties": {
+          "containers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The name of the container"
+                },
+                "image": {
+                  "type": "string",
+                  "description": "The Docker image for the container"
+                },
+                "ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "containerPort": {
+                        "type": "integer",
+                        "description": "The port number that the container exposes"
+                      }
+                    },
+                    "required": ["containerPort"],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": ["name", "image"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["containers"],
+        "additionalProperties": false
+      }
+    },
+    "required": ["apiVersion", "kind", "metadata", "spec"],
+    "additionalProperties": false
+  }
+  

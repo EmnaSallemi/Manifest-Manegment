@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Kubernetes ConfigMap",
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "v1",
+      "description": "The API version for the Kubernetes ConfigMap"
+    },
+    "kind": {
+      "type": "string",
+      "const": "ConfigMap",
+      "description": "The kind of Kubernetes resource (ConfigMap)"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the ConfigMap"
+        }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "null"],
+        "description": "The data stored in the ConfigMap"
+      },
+      "description": "Data contains the configuration data. Each key must be a valid DNS_SUBDOMAIN with an optional leading dot."
+    }
+  },
+  "required": ["apiVersion", "kind", "metadata", "data"],
+  "additionalProperties": false
+}

@@ -1,0 +1,24 @@
+{
+    "schema": {
+      "properties": {
+        "visible": {
+          "type": "object",
+          "properties": {
+            "form": {
+              "type": "boolean",
+              "title": "Toggle Form Visibility"
+            }
+          }
+        }
+      }
+    },
+    "customFormItems": {
+      "visible": {
+        "form": {
+          "inlinetitle": "Toggle Form Visibility",
+          "toggleNext": 1
+        }
+      }
+    }
+  }
+  

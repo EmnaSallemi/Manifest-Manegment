@@ -1,0 +1,37 @@
+/* Définir la largeur du menu déroulant */
+.select-container {
+  width: 100px; 
+  padding: 50px;  
+  margin-left: 100px;
+}
+
+.json-content {
+  margin-left: 250px; 
+  
+}
+
+/* Style du menu déroulant */
+.select-container select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  appearance: none; /* Supprimez les styles de base du navigateur */
+}
+
+
+
+/* Style au survol du menu déroulant */
+.select-container select:hover {
+  border-color: #666;
+}
+
+/* Style au focus du menu déroulant */
+.select-container select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}

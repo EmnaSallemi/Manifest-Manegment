@@ -1,0 +1,73 @@
+<h1>List of Pods and Namespaces</h1>
+
+<div>
+  <label for="showPods">Show Pods</label>
+  <input type="checkbox" id="showPods" name="showPods" (change)="togglePods($event.target.checked)">
+</div>
+
+<div>
+  <label for="showNamespaces">Show Namespaces</label>
+  <input type="checkbox" id="showNamespaces" name="showNamespaces" (change)="toggleNamespaces($event.target.checked)">
+</div>
+
+<div>
+  <label for="showDeployments">Show Deployments</label>
+  <input type="checkbox" id="showDeployments" name="showDeployments" (change)="toggleDeployments($event.target.checked)">
+</div>
+
+<div>
+  <label for="showServices">Show Services</label>
+  <input type="checkbox" id="showServices" name="showNamespaces" (change)="toggleServices($event.target.checked)">
+</div>
+
+<div>
+  <label for="showReplicasets">Show ReplicaSets</label>
+  <input type="checkbox" id="showReplicasets" name="showReplicasets" (change)="toggleReplicasets($event.target.checked)">
+</div>
+
+<div>
+  <label for="showJobs">Show Jobs</label>
+  <input type="checkbox" id="showJobs" name="showJobs" (change)="toggleJobs($event.target.checked)">
+</div>
+
+<div>
+  <label for="showNodes">Show Nodes</label>
+  <input type="checkbox" id="showNodes" name="showNodes" (change)="toggleNodes($event.target.checked)">
+</div>
+
+<div>
+  <label for="showEndpoints">Show Endpoints</label>
+  <input type="checkbox" id="showEndpoints" name="showEndpoints" (change)="toggleEndpoints($event.target.checked)">
+</div>
+<div>
+  <label for="showConfigMaps">Show ConfigMaps</label>
+  <input type="checkbox" id="showConfigMaps" name="showConfigMaps" (change)="toggleConfigMaps($event.target.checked)">
+</div>
+<div>
+  <label for="showIngress">Show Ingress</label>
+  <input type="checkbox" id="showIngress" name="showIngress" (change)="toggleIngress($event.target.checked)">
+</div>
+<div>
+  <label for="showDeamon">Show DeamonSet</label>
+  <input type="checkbox" id="showDeamon" name="showDeamon" (change)="toggleDeamonset($event.target.checked)">
+</div>
+<div>
+  <label for="showPVC">Show PVC</label>
+  <input type="checkbox" id="showPVC" name="showPVC" (change)="togglePVC($event.target.checked)">
+</div>
+<div>
+  <label for="showSC">Show SC</label>
+  <input type="checkbox" id="showSC" name="showSC" (change)="toggleSC($event.target.checked)">
+</div>
+<div>
+  <label for="showStateful">Show stateful</label>
+  <input type="checkbox" id="showStateful" name="showStateful" (change)="toggleStateful($event.target.checked)">
+</div>
+
+<!-- 
+<div>
+  <label for="showBoth">Show Both</label>
+  <input type="checkbox" id="showBoth" name="showBoth" (change)="toggleBoth($event.target.checked)">
+</div> -->
+
+<div id="network" style="width: 100%; height: 500px; border: 1px solid lightgray;"></div>
