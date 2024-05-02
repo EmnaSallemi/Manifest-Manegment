@@ -38,9 +38,8 @@ public class ListerController {
             List<String> namespaces= ListerService.getAllNamespaces();
             return new ResponseEntity<>(namespaces, HttpStatus.OK);
         } catch (ApiException e) {
-            // Handle exceptions
             e.printStackTrace();
-            return null; // Or return an empty list or handle the error as appropriate
+            return null; 
         }
     }
     @GetMapping("/services")

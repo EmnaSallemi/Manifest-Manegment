@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import * as ace from 'brace';
+import ace from 'brace';
 import 'brace/mode/json';
 import 'brace/theme/sqlserver';
 

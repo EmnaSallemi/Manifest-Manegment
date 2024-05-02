@@ -1,91 +1,74 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Kubernetes Deployment",
+  "$schema": "http://json-schema.org/schema#",
+  "description": "Deployment enables declarative updates for Pods and ReplicaSets.",
   "type": "object",
   "properties": {
     "apiVersion": {
-      "type": "string",
-      "const": "apps/v1",
-      "description": "The API version for the Kubernetes Deployment"
+      "description": "APIVersion defines the versioned schema of this representation of an object.",
+      "default": "v1",
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "kind": {
-      "type": "string",
-      "const": "Deployment",
-      "description": "The kind of Kubernetes resource (Deployment)"
+      "description": "Kind is a string value representing the REST resource this object represents.",
+      "default": "Deployment",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "Deployment"
+      ]
     },
     "metadata": {
+      "description": "Standard object's metadata.",
       "type": "object",
       "properties": {
         "name": {
-          "type": "string",
-          "description": "The name of the Deployment"
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
         },
         "labels": {
           "type": "object",
-          "properties": {
-            "app": {
-              "type": "string",
-              "const": "nginx",
-              "description": "The label identifying the application"
-            }
-          },
-          "required": ["app"],
-          "additionalProperties": false
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       },
-      "required": ["name", "labels"],
-      "additionalProperties": false
+      "required": ["name"]
     },
     "spec": {
+      "description": "Specification of the desired behavior of the Deployment.",
       "type": "object",
       "properties": {
         "replicas": {
           "type": "integer",
-          "minimum": 1,
-          "description": "The number of replicas of the Deployment"
+          "minimum": 1
         },
         "selector": {
           "type": "object",
-          "properties": {
-            "matchLabels": {
-              "type": "object",
-              "properties": {
-                "app": {
-                  "type": "string",
-                  "const": "nginx",
-                  "description": "The label selector for pods"
-                }
-              },
-              "required": ["app"],
-              "additionalProperties": false
-            }
-          },
-          "required": ["matchLabels"],
-          "additionalProperties": false
+          "additionalProperties": {
+            "type": "string"
+          }
         },
         "template": {
           "type": "object",
           "properties": {
             "metadata": {
-              "type": "object",
-              "properties": {
-                "labels": {
-                  "type": "object",
-                  "properties": {
-                    "app": {
-                      "type": "string",
-                      "const": "nginx",
-                      "description": "The label for the pod template"
-                    }
-                  },
-                  "required": ["app"],
-                  "additionalProperties": false
-                }
-              },
-              "required": ["labels"],
-              "additionalProperties": false
+              "$ref": "#/properties/metadata"
             },
             "spec": {
+              "description": "Specification of the desired behavior of the Pod.",
               "type": "object",
               "properties": {
                 "containers": {
@@ -94,12 +77,10 @@
                     "type": "object",
                     "properties": {
                       "name": {
-                        "type": "string",
-                        "description": "The name of the container"
+                        "type": "string"
                       },
                       "image": {
-                        "type": "string",
-                        "description": "The Docker image for the container"
+                        "type": "string"
                       },
                       "ports": {
                         "type": "array",
@@ -107,32 +88,50 @@
                           "type": "object",
                           "properties": {
                             "containerPort": {
-                              "type": "integer",
-                              "description": "The port on the container"
+                              "type": "integer"
+                            },
+                            "protocol": {
+                              "type": "string",
+                              "enum": ["TCP", "UDP"]
                             }
                           },
-                          "required": ["containerPort"],
-                          "additionalProperties": false
+                          "required": ["containerPort"]
                         }
                       }
                     },
-                    "required": ["name", "image", "ports"],
-                    "additionalProperties": false
+                    "required": ["name", "image"]
                   }
                 }
               },
-              "required": ["containers"],
-              "additionalProperties": false
+              "required": ["containers"]
             }
           },
-          "required": ["metadata", "spec"],
-          "additionalProperties": false
+          "required": ["metadata", "spec"]
+        },
+        "strategy": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["Recreate", "RollingUpdate"]
+            }
+          },
+          "required": ["type"]
         }
       },
-      "required": ["replicas", "selector", "template"],
-      "additionalProperties": false
+      "required": ["replicas", "selector", "template"]
+    },
+    "status": {
+      "description": "Most recently observed status of the Deployment.",
+      "type": "object"
     }
   },
-  "required": ["apiVersion", "kind", "metadata", "spec"],
-  "additionalProperties": false
+  "required": ["kind", "metadata", "spec"],
+  "x-kubernetes-group-version-kind": [
+    {
+      "group": "apps",
+      "kind": "Deployment",
+      "version": "v1"
+    }
+  ]
 }

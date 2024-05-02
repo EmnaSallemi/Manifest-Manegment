@@ -35,8 +35,6 @@
             "styles": [
               "demo/styles.scss", 
               "demo/app/demo.component.scss",
-              "demo/app/yml-file/yml-file.component.scss",
-              "demo/app/dynamic-form/dynamic-form.component.scss"
             ],
             "scripts": [],
             "vendorChunk": true,

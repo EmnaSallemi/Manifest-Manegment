@@ -67,7 +67,7 @@ export class WorkloadDetailsComponent implements OnInit {
     console.log('Selected choice:', choice);
     
     if (choice === 'Yml File') {
-      this.router.navigate(['/ymlFile']); // Navigate to the new page for YAML file
+      this.router.navigate(['/ymlFile']); 
     }else if(choice== 'Form') {
       this.router.navigate(['/dynamicForm']);
     }
