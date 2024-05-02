@@ -1,12 +1,14 @@
 package com.example.controller;
 
 import com.example.service.ListerServiceImpl;
+
 import io.kubernetes.client.openapi.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -107,6 +109,12 @@ public class ListerController {
         List<String> stateful = ListerService.getAllStatefulSets();
         return new ResponseEntity<>(stateful,HttpStatus.OK);
     }
-   
+    @GetMapping("/connection")
+    public ResponseEntity<List<String>> getPodDeploymentConnections() throws IOException, ApiException {
+        List<String> connection = ListerService.getPodDeploymentConnections();
+        return new ResponseEntity<>(connection,HttpStatus.OK);
+    }
+    
+    
     
 }

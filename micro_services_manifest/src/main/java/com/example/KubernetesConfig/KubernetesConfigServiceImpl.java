@@ -3,6 +3,7 @@ package com.example.KubernetesConfig;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.kubernetes.client.openapi.ApiClient;
@@ -11,14 +12,12 @@ import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
 
 @Service
-public class KubernetesConfigServiceImpl {
-    public void configureKubernetesAccess() throws IOException {
-        // file path to your KubeConfig
+public class KubernetesConfigServiceImpl implements KubernetesConfigService{
+
+    public  ApiClient configureKubernetesAccess() throws IOException {
         String kubeConfigPath = System.getenv("HOME") + "/.kube/config";
-        // loading the out-of-cluster config, a kubeconfig from file-system
         ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
-        // set the global default api-client to the in-cluster one from above
         Configuration.setDefaultApiClient(client);
-        
+        return client;
     }
 }

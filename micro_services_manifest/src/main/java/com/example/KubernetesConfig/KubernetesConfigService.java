@@ -2,6 +2,10 @@ package com.example.KubernetesConfig;
 
 import java.io.IOException;
 
+import io.kubernetes.client.openapi.ApiClient;
+
 public interface KubernetesConfigService {
-    void configureKubernetesAccess() throws IOException;
+    
+    public  ApiClient configureKubernetesAccess() throws IOException;
+
 }
