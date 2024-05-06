@@ -8,8 +8,8 @@ export class CreateWithYamlService {
 
   constructor(private http: HttpClient) { }
 
-  addResource(yamlContent: string) {
+  addResource(formData: FormData) {
     const apiUrl = 'http://localhost:8080/api/create/resource'; 
-    return this.http.post(apiUrl, { yamlContent });
+    return this.http.post(apiUrl, formData);
   }
 }

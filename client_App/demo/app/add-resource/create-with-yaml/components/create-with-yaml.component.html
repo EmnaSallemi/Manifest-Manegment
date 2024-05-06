@@ -21,33 +21,23 @@
   <body style="align-items: center;">
 
     <div class="fileContainer" style="align-items: center;">
-        
-        <h3>Upload your File :</h3>
-        <div class="drag-area">
-            <div class="icon">
-                <i class="fas fa-images"></i>
-            </div>
-            <span class="header">Drag & Drop</span>
-            <span class="support">Supports: Yaml files</span>
-        </div>
-        <div>
-            <input type="file" id="fileInputAlt" /> 
-      
-        </div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-        <div style="margin-bottom: 20px;"></div>
-
-        <button id="submitButton"  (click)="onSubmit()"> Submit</button> 
-    </div>
+      <h3>Upload your File :</h3>
+      <div class="drag-area">
+          <div class="icon">
+              <i class="fas fa-images"></i>
+          </div>
+          <span class="header">Drag & Drop</span>
+          <span class="support">Supports: Yaml files</span>
+      </div>
+      <div>
+          <input type="file" id="fileInputAlt" /> 
+      </div>
+      <div style="margin-bottom: 20px;"></div>
+      <!-- Add success message here -->
+      <div *ngIf="successMessage" style="color: green;">{{ successMessage }}</div>
+      <button id="submitButton" (click)="onSubmit()">Submit</button> 
+  </div>
+  
    
   </body>
   

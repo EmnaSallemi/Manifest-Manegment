@@ -7,6 +7,7 @@ import { CreateWithYamlService } from '../services/create-with-yaml.service';
   styleUrls: ['./create-with-yaml.component.scss']
 })
 export class CreateWithYamlComponent {
+  successMessage: string;
 
   constructor(private createWithYamlService: CreateWithYamlService) { }
 
@@ -14,18 +15,17 @@ export class CreateWithYamlComponent {
     const fileInput = document.getElementById('fileInputAlt') as HTMLInputElement;
     const file = fileInput.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const yamlContent = reader.result as string;
-        this.sendYamlToBackend(yamlContent); 
-      };
-      reader.readAsText(file);
+      this.sendYamlToBackend(file); 
     }
   }
 
-  private sendYamlToBackend(yamlContent: string) {
-    this.createWithYamlService.addResource(yamlContent).subscribe(
+  private sendYamlToBackend(file: File) {
+    const formData = new FormData();
+    formData.append('yamlFile', file); 
+
+    this.createWithYamlService.addResource(formData).subscribe(
       response => {
+        this.successMessage = 'Resource added successfully';
         console.log('Resource added successfully:', response);
       },
       error => {

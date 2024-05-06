@@ -2,9 +2,10 @@ package com.example.CreateReource.services;
 
 import java.io.IOException;
 
-
 import io.kubernetes.client.openapi.ApiException;
 
-public interface CreateService {
+
+public interface CreateResource {
     void createPodFromYaml(String yamlContent) throws IOException, ApiException;
+    public void createServiceFromYaml(String yamlContent) throws IOException, ApiException;
 }
