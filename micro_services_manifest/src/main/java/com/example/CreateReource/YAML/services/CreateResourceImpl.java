@@ -1,4 +1,4 @@
-package com.example.CreateReource.services;
+package com.example.CreateReource.YAML.services;
 
 import java.io.IOException;
 
@@ -42,6 +42,7 @@ public class CreateResourceImpl implements CreateResource {
       //Service Creation
       @Override
       public void createServiceFromYaml(String yamlContent) throws IOException, ApiException {
+        kubernetesConfigService.configureKubernetesAccess();
         CoreV1Api api = new CoreV1Api();
         V1Service yamlSvc = (V1Service) Yaml.load(yamlContent);
         if (yamlSvc.getMetadata() != null && yamlSvc.getMetadata().getNamespace() != null ) {

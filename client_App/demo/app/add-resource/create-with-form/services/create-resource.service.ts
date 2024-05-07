@@ -1,19 +1,16 @@
-import { environment } from '../../../../environments/environment';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CreateResourceService {
-  constructor(private http: HttpClient) {}
+  private apiUrl = 'http://localhost:8080/api/create/resource/form'; 
 
-  postJsonData(data: any, namespace: string): Observable<any> {
-    const apiUrl = `${environment.KubernetesApiUrl}/api/v1/namespaces/${namespace}/pods`;
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-    });
+  constructor(private http: HttpClient) { }
 
-    return this.http.post<any>(apiUrl, data, { headers });
+  createResource(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
   }
 }

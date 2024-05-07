@@ -1,4 +1,4 @@
-package com.example.CreateReource.controllers;
+package com.example.CreateReource.YAML.controllers;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.CreateReource.services.CreateResource;
+import com.example.CreateReource.YAML.services.CreateResource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

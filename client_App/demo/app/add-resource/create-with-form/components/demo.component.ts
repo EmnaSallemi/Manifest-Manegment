@@ -103,18 +103,13 @@ export class DemoComponent implements OnInit {
   }
 
   onSubmit(data: any) {
-    // Extract the namespace from the form data
-    const namespace = data.metadata.namespace;
-    //console.log('Namespace:', namespace);
-    // Provide the namespace to the service along with the rest of the data
-    this.CreateResourceService.postJsonData(data, namespace).subscribe(
+    // You can send the form data to the backend service here
+    this.CreateResourceService.createResource(data).subscribe(
       response => {
         console.log('Resource created successfully:', response);
-        //console.log('Json:', data);
       },
       error => {
         console.error('Error creating resource:', error);
-        //console.log('Json:', data);
       }
     );
   }
