@@ -6,7 +6,7 @@ import { ServiceTestComponent} from './service-test/service-test.component';
 import { NetworkVisualizationComponent } from './network-visualization/network-visualization.component';
 import { Component } from '@angular/core';
 import { WorkloadDetailsComponent } from './workload-details/workload-details.component';
-
+import { DescComponent } from './manifest-desc/desc/desc.component';
 export const routes: Route[] = [
   { path: '', 
     component: DemoComponent,
@@ -17,6 +17,7 @@ export const routes: Route[] = [
   { path: 'dynamicForm', component: DynamicFormComponent },
   { path: 'servicetest', component: ServiceTestComponent },
   { path: 'workload-details', component: WorkloadDetailsComponent},
+  { path: 'desc', component: DescComponent},
   
 
 ];

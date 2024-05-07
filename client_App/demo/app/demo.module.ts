@@ -25,10 +25,22 @@ import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { ServiceTestComponent } from './service-test/service-test.component';
 import { NetworkVisualizationComponent } from './network-visualization/network-visualization.component';
 import { WorkloadDetailsComponent } from './workload-details/workload-details.component';
-
+import { DescComponent } from './manifest-desc/desc/desc.component';
+// import { MatDrawerModule } from '@angular/material/drawer';
+import { MatSidenavModule } from '@angular/material/sidenav';
 @NgModule({
-  declarations: [AceEditorDirective, DemoComponent, DemoRootComponent, YmlFileComponent, DynamicFormComponent, ServiceTestComponent, NetworkVisualizationComponent, WorkloadDetailsComponent],
+  declarations: [AceEditorDirective, 
+                  DemoComponent, 
+                  DemoRootComponent, 
+                  YmlFileComponent, 
+                  DynamicFormComponent, 
+                  ServiceTestComponent, 
+                  NetworkVisualizationComponent,
+                  WorkloadDetailsComponent,
+                  DescComponent
+                  ],
   imports: [
+    
     BrowserModule, BrowserAnimationsModule, FlexLayoutModule, FormsModule,
     HttpClientModule, MatButtonModule, MatCardModule, MatCheckboxModule,
     MatIconModule, MatMenuModule, MatSelectModule, MatToolbarModule,
@@ -37,7 +49,7 @@ import { WorkloadDetailsComponent } from './workload-details/workload-details.co
     Bootstrap3FrameworkModule,
     MaterialDesignFrameworkModule,
     JsonSchemaFormModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,MatSidenavModule
   ],
   bootstrap: [DemoRootComponent]
 })

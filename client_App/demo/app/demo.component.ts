@@ -25,7 +25,7 @@ import { JsonPointer } from '@ajsf/core';
     ]),
   ],
 })
-export class DemoComponent implements OnInit {
+export class DemoComponent {
 
   constructor(private router: Router) { } 
   
@@ -33,9 +33,7 @@ export class DemoComponent implements OnInit {
   showChoices = false;
   selectedChoice: string | null = null;
 
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+ 
   selectChoice(choice: string) {
     this.selectedChoice = choice;
     console.log('Selected choice:', choice);

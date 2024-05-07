@@ -7,6 +7,7 @@ import io.kubernetes.client.openapi.ApiException;
 
 public  interface DescService {
 
-    public String getPodDescriptions(String namespace, String podName) throws ApiException, FileNotFoundException, IOException ;
-    
+    // public String getPodDescriptions( String podName) throws ApiException, FileNotFoundException, IOException ;
+    // public String getServiceDescriptions(String serviceName) throws ApiException, IOException ;
+    public String getResourceDescriptions(String resourceName, String resourceType) throws ApiException, IOException ;
 } 

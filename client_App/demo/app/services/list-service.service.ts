@@ -9,7 +9,7 @@ import { V1PodList } from '@kubernetes/client-node';
 })
 export class ListService {
 
-    private baseUrl = 'http://localhost:8080/api/list'; // Adjust the URL as per your backend
+    private baseUrl = 'http://localhost:8080/api/list'; 
 
     constructor(private http: HttpClient) { }
 

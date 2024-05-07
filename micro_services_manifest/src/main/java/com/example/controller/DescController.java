@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.DescServiceImpl;
-import com.example.service.ListerService;
 
 import io.kubernetes.client.openapi.ApiException;
 
@@ -24,15 +23,18 @@ public class DescController {
     @Autowired
     private DescServiceImpl DescService;
 
-    @GetMapping("/poddesc/{namespace}/{podName}")
-    public ResponseEntity<String> getPodDescriptions(@PathVariable String namespace, @PathVariable String podName) throws IOException, ApiException {
+    @GetMapping("/{resourceType}/{ressourceName}")
+    public ResponseEntity<String> getResourceDescriptions( @PathVariable String ressourceName,@PathVariable String resourceType) throws IOException, ApiException {
         try {
-            String description = DescService.getPodDescriptions(namespace, podName);
+            String description = DescService.getResourceDescriptions( ressourceName, resourceType);
             return ResponseEntity.ok(description);
         } catch (ApiException e) {
             // Handle API exception
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while fetching pod description");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while fetching ressource description");
         }    
     }
+
+      
+    }
     
-}
+

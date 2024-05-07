@@ -3,7 +3,6 @@ package com.example.KubernetesConfig;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.kubernetes.client.openapi.ApiClient;

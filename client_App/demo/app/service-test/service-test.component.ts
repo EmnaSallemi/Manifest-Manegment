@@ -1,17 +1,101 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ListService } from '../services/list-service.service';
 import {  Network } from 'vis-network';
 import { DataSet } from 'vis-data';
+import { DescServiceService } from '../manifest-desc/services/desc-service.service';
+import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-service-test',
   templateUrl: './service-test.component.html',
-  styleUrls: ['./service-test.component.scss']
+  styleUrls: ['./service-test.component.scss'],
+  animations: [
+    trigger('frameAnimation', [
+      state('open', style({
+        transform: 'translateX(0)'
+      })),
+      state('closed', style({
+        transform: 'translateX(100%)'
+      })),
+      transition('closed => open', [
+        animate('0.5s ease-out')
+      ]),
+      transition('open => closed', [
+        animate('0.5s ease-out')
+      ])
+    ])
+  ]
+  
 })
 export class ServiceTestComponent implements OnInit {
-
-  
+  //selectedPod: string | null = null;
+  selectedResource: string | null = null;
+  ressourceName: string[];
+  resourceType: string[];
+  selectedType: string;
+ 
+  ngOnInit(): void {
+    this.nodes = new DataSet<any>();
+    this.edges = new DataSet<any>();
+  }
+  onResourceSelected(resourceName: string, resourceType: string): void {
+    this.selectedResource = resourceName;
+    this.selectedType = resourceType;
     
+  }
+
+  isFrameOpen: boolean = false;
+
+  closeFrame(): void {
+    this.isFrameOpen = false;
+  }
+
+  onNodeClick(properties: any): void {
+    const selectedNodes = this.network.getSelectedNodes();
+    
+    this.isFrameOpen = true;
+
+    selectedNodes.forEach((nodeId: string) => {
+        const node = this.network.body.nodes[nodeId];
+        this.selectedResource = node.options.title;
+        // const labelParts = node.options.label.split(':');
+        // const resourceType = labelParts[0].trim().toLowerCase(); // Extracted resource type
+
+
+        const labelParts = node.options.label.split(':');
+        if (labelParts.length !== 2) {
+            console.error('Invalid label format:', node.options.label);
+            return;
+        }
+
+        const resourceType = labelParts[0].trim().toLowerCase(); // Extracted resource type
+        const resourceName = labelParts[1].trim(); // Extracted resource name
+
+        this.selectedType= resourceType;
+
+        console.log('Resource Type:', resourceType);
+        console.log('Resource Name:', resourceName);
+
+        //console.log(node.options.label);
+        //console.log(resourceType);
+        // Fetch resource description
+        //console.log(node.options.title);
+        this.descService.getResourceDescriptions(resourceType,resourceName)
+        .subscribe(
+            (description: string) => {
+                console.log('Resource Description:', description);
+            },
+            (error) => {
+                console.error('Error fetching resource description:', error);
+            }
+        );
+    });
+  }
+
+
+
     podConnections: any[];
     public network: any;
     public nodes: DataSet<any>;
@@ -22,7 +106,7 @@ export class ServiceTestComponent implements OnInit {
     podNames: string[];
     deployments: string[];
     replicasets: string[];
-    Nodes: string[];
+    Nodess: string[];
     jobs: string[];
     configmaps:string[];
     endpoints: string[];
@@ -47,33 +131,37 @@ export class ServiceTestComponent implements OnInit {
     showSC=false;
     showStateful=false;
     showBoth =false;
-  
-    constructor(private ListService: ListService) { }
-  
 
-  renderVisualization(): void {
-    const container = document.getElementById('network');
+   
+    constructor(private router: Router,private ListService: ListService, private descService: DescServiceService) { }
 
-    const data = {
-      nodes: this.nodes,
-      edges: this.edges
-    };
-
-    const options = {
-      nodes: {
-        // shape: 'circle'
-      }
-    }; // You can specify visualization options here
-
-    this.network = new Network(container, data, options);
-  }
-
-
-  ngOnInit(): void {
-    this.nodes = new DataSet<any>();
-    this.edges = new DataSet<any>();
     
-  }
+  
+    showCheckboxes: boolean = false;
+
+    toggleCheckboxList(): void {
+      this.showCheckboxes = !this.showCheckboxes;
+    }
+    
+    renderVisualization(): void {
+      const container = document.getElementById('network');
+
+      const data = {
+        nodes: this.nodes,
+        edges: this.edges
+      };
+
+      const options = {
+        nodes: {
+          // shape: 'circle'
+        }
+      }; // You can specify visualization options here
+      // this.network.on('click', this.onNodeClick.bind(this));
+
+      this.network = new Network(container, data, options);
+    }
+
+
 
   togglePods(checked: boolean): void {
     this.showPods = !this.showPods;
@@ -104,7 +192,7 @@ export class ServiceTestComponent implements OnInit {
   }
   toggleNodes(checked: boolean): void {
     this.showNodes = !this.showNodes;
-    this.getAllJobs();
+    this.getAllNodes();
   }
   toggleEndpoints(checked: boolean): void {
     this.showEndpoints = !this.showEndpoints;
@@ -196,10 +284,10 @@ export class ServiceTestComponent implements OnInit {
   }
   getAllNodes(): void{
     this.ListService.getAllNodes()
-    .subscribe(Nodes => {
-      this.Nodes = Nodes;
+    .subscribe(Nodess => {
+      this.Nodess = Nodess;
       this.updateNodes();
-      console.log('Nodes:', this.Nodes);
+      console.log('Nodes:', this.Nodess);
     });
   }
   getAllEndpoints(): void{
@@ -279,7 +367,7 @@ export class ServiceTestComponent implements OnInit {
       if (this.showServices || this.showBoth){
         this.services.forEach((service, index) => {
           const nodeId = `service_${index + 1}`;
-          const nodeName = `srervice: ${service}`;
+          const nodeName = `service: ${service}`;
           this.nodes.add({ id: nodeId, label: nodeName, title: service, shape: 'triangle', color: '#232d4b' });
         });}
 
@@ -305,11 +393,12 @@ export class ServiceTestComponent implements OnInit {
         });}
 
         if (this.showNodes || this.showBoth){
-          this.jobs.forEach((ND, index) => {
+          this.Nodess.forEach((ND, index) => {
             const nodeId = `ND_${index + 1}`;
             const nodeName = `Node: ${ND}`;
             this.nodes.add({ id: nodeId, label: nodeName, title: ND, shape: 'hexagon', color: 'yellow' });
           });}
+          
         if (this.showEndpoints || this.showBoth){
           this.endpoints.forEach((endpoint, index) => {
             const nodeId = `endpoint_${index + 1}`;
@@ -324,10 +413,10 @@ export class ServiceTestComponent implements OnInit {
               this.nodes.add({ id: nodeId, label: nodeName, title: configmap, shape: 'hexagon', color: 'black' });
             });}
           if (this.showIngress|| this.showBoth){
-            this.ingress.forEach((ing, index) => {
-              const nodeId = `ing_${index + 1}`;
-              const nodeName = `ing: ${ing}`;
-              this.nodes.add({ id: nodeId, label: nodeName, title: ing, shape: 'hexagon', color: 'black' });
+            this.ingress.forEach((ingress, index) => {
+              const nodeId = `ingress_${index + 1}`;
+              const nodeName = `ingress: ${ingress}`;
+              this.nodes.add({ id: nodeId, label: nodeName, title: ingress, shape: 'hexagon', color: 'black' });
             });}
           if (this.showDeamon|| this.showBoth){
             this.deamonsets.forEach((deamonset, index) => {
@@ -342,10 +431,10 @@ export class ServiceTestComponent implements OnInit {
                 this.nodes.add({ id: nodeId, label: nodeName, title: PVC, shape: 'hexagon', color: '#FF6666' });
               });}
             if (this.showSC|| this.showBoth){
-              this.SCs.forEach((SC, index) => {
-                const nodeId = `SC_${index + 1}`;
-                const nodeName = `SC: ${SC}`;
-                this.nodes.add({ id: nodeId, label: nodeName, title: SC, shape: 'hexagon', color: '#FFCCE5' });
+              this.SCs.forEach((sc, index) => {
+                const nodeId = `sc_${index + 1}`;
+                const nodeName = `sc: ${sc}`;
+                this.nodes.add({ id: nodeId, label: nodeName, title: sc, shape: 'hexagon', color: '#FFCCE5' });
               });}
             if (this.showStateful|| this.showBoth){
               this.statefuls.forEach((stateful, index) => {
