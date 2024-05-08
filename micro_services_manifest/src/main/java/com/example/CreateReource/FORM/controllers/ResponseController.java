@@ -28,11 +28,15 @@ public class ResponseController {
             String kind = jsonNode.get("kind").asText(); 
               if ("Pod".equals(kind)) {
                 createResource.createPod(response);
-                return ResponseEntity.ok("Pod created successfully from YAML");
-            } else if ("Service".equals(kind)) {
-                createResource.createService(response);
-                return ResponseEntity.ok("Service created successfully from YAML");
-            } else {
+                return ResponseEntity.ok("Pod created successfully ");
+            } else if ("ConfigMap".equals(kind)) {
+                createResource.createConfigMap(response);
+                return ResponseEntity.ok("Service created successfully ");
+            } else if ("Deployment".equals(kind)) {
+                createResource.createDeployment(response);
+                return ResponseEntity.ok("Deployment created successfully ");
+            }
+             else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Unsupported resource kind: " + kind);
             }
           
