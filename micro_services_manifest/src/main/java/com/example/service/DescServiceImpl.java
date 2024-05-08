@@ -25,6 +25,7 @@ import io.kubernetes.client.openapi.models.V1ConfigMap;
 import io.kubernetes.client.openapi.models.V1ConfigMapList;
 import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1DaemonSet;
+import io.kubernetes.client.openapi.models.V1DaemonSetList;
 import io.kubernetes.client.openapi.models.V1Deployment;
 import io.kubernetes.client.openapi.models.V1DeploymentList;
 import io.kubernetes.client.openapi.models.V1Endpoints;
@@ -32,6 +33,7 @@ import io.kubernetes.client.openapi.models.V1EndpointsList;
 import io.kubernetes.client.openapi.models.V1Ingress;
 import io.kubernetes.client.openapi.models.V1Job;
 import io.kubernetes.client.openapi.models.V1JobList;
+import io.kubernetes.client.openapi.models.V1LoadBalancerStatus;
 import io.kubernetes.client.openapi.models.V1Namespace;
 import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1NodeList;
@@ -206,7 +208,7 @@ public class DescServiceImpl<ExtensionsV1beta1Api> implements DescService {
 
     private String generateServiceDescription(V1Service service) {
         StringBuilder descriptionBuilder = new StringBuilder();
-
+    
         descriptionBuilder.append("Name: ").append(service.getMetadata().getName()).append("\n");
         descriptionBuilder.append("Namespace: ").append(service.getMetadata().getNamespace()).append("\n");
         descriptionBuilder.append("Labels: ").append(service.getMetadata().getLabels()).append("\n");
@@ -214,12 +216,12 @@ public class DescServiceImpl<ExtensionsV1beta1Api> implements DescService {
         descriptionBuilder.append("Annotations: ").append(service.getMetadata().getAnnotations()).append("\n");
         descriptionBuilder.append("Creation Timestamp: ").append(service.getMetadata().getCreationTimestamp()).append("\n");
         descriptionBuilder.append("Owner References: ").append(service.getMetadata().getOwnerReferences()).append("\n");
-
-       // Service specific attributes
+    
+        // Service specific attributes
         descriptionBuilder.append("Type: ").append(service.getSpec().getType()).append("\n");
         descriptionBuilder.append("Cluster IP: ").append(service.getSpec().getClusterIP()).append("\n");
         descriptionBuilder.append("Session Affinity: ").append(service.getSpec().getSessionAffinity()).append("\n");
-
+    
         // Ports
         List<V1ServicePort> ports = service.getSpec().getPorts();
         if (!ports.isEmpty()) {
@@ -232,15 +234,30 @@ public class DescServiceImpl<ExtensionsV1beta1Api> implements DescService {
                 descriptionBuilder.append("\tNode Port: ").append(port.getNodePort()).append("\n");
             }
         }
+    
         // Selector
         Map<String, String> selector = service.getSpec().getSelector();
         if (selector != null && !selector.isEmpty()) {
             descriptionBuilder.append("Selector: ").append(selector).append("\n");
         }
-
-
+    
+        // External IP
+        List<String> externalIPs = service.getSpec().getExternalIPs();
+        if (externalIPs != null && !externalIPs.isEmpty()) {
+            descriptionBuilder.append("External IPs: ").append(externalIPs).append("\n");
+        }
+    
+        // Load Balancer details
+        V1LoadBalancerStatus loadBalancer = service.getStatus().getLoadBalancer();
+        if (loadBalancer != null) {
+            descriptionBuilder.append("Load Balancer: ").append(loadBalancer).append("\n");
+        }
+    
+        
+    
         return descriptionBuilder.toString();
     }
+    
     
 
     private String getDeploymentDescription(ApiClient client, String deploymentName) throws ApiException, IOException {
@@ -634,11 +651,20 @@ public class DescServiceImpl<ExtensionsV1beta1Api> implements DescService {
     }
     
     private String getDaemonSetDescription(ApiClient client, String resourceName) throws ApiException {
-        // Create an instance of the AppsV1Api
         AppsV1Api api = new AppsV1Api(client);
+        V1DaemonSetList daemonSetList = api.listDaemonSetForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
+        String namespace = null;
+        for (V1DaemonSet deamon : daemonSetList.getItems()) {
+            if (deamon.getMetadata().getName().equals(resourceName)) {
+                namespace = deamon.getMetadata().getNamespace();
+                break;
+            }
+        }
     
-        // Retrieve the DaemonSet object by name
-        V1DaemonSet daemonSet = api.readNamespacedDaemonSet(resourceName, "default", null);
+        if (namespace == null) {
+            throw new ApiException("Namespace not found for pod: " + resourceName);
+        }
+        V1DaemonSet daemonSet = api.readNamespacedDaemonSet(resourceName, namespace, null);
         return generateDaemonSetDescription(daemonSet);
     }
 
@@ -815,59 +841,59 @@ public class DescServiceImpl<ExtensionsV1beta1Api> implements DescService {
     //     // nécessaire
     //     StringBuilder descriptionBuilder = new StringBuilder();
 
-    //     descriptionBuilder.append("Name: ").append(pod.getMetadata().getName()).append("\n");
-    //     descriptionBuilder.append("Namespace: ").append(pod.getMetadata().getNamespace()).append("\n");
-    //     descriptionBuilder.append("Labels: ").append(pod.getMetadata().getLabels()).append("\n");
-    //     descriptionBuilder.append("Status: ").append(pod.getStatus().getPhase()).append("\n");
-    //     descriptionBuilder.append("Annotations: ").append(pod.getMetadata().getAnnotations()).append("\n");
-    //     descriptionBuilder.append("Creation Timestamp: ").append(pod.getMetadata().getCreationTimestamp()).append("\n");
-    //     descriptionBuilder.append("Owner References: ").append(pod.getMetadata().getOwnerReferences()).append("\n");
+        // descriptionBuilder.append("Name: ").append(pod.getMetadata().getName()).append("\n");
+        // descriptionBuilder.append("Namespace: ").append(pod.getMetadata().getNamespace()).append("\n");
+        // descriptionBuilder.append("Labels: ").append(pod.getMetadata().getLabels()).append("\n");
+        // descriptionBuilder.append("Status: ").append(pod.getStatus().getPhase()).append("\n");
+        // descriptionBuilder.append("Annotations: ").append(pod.getMetadata().getAnnotations()).append("\n");
+        // descriptionBuilder.append("Creation Timestamp: ").append(pod.getMetadata().getCreationTimestamp()).append("\n");
+        // descriptionBuilder.append("Owner References: ").append(pod.getMetadata().getOwnerReferences()).append("\n");
 
-    //     descriptionBuilder.append("Node Name: ").append(pod.getSpec().getNodeName()).append("\n");
-    //     descriptionBuilder.append("Service Account Name: ").append(pod.getSpec().getServiceAccountName()).append("\n");
-    //     descriptionBuilder.append("Host Network: ").append(pod.getSpec().getHostNetwork()).append("\n");
-    //     descriptionBuilder.append("Host PID: ").append(pod.getSpec().getHostPID()).append("\n");
-    //     descriptionBuilder.append("Host IPC: ").append(pod.getSpec().getHostIPC()).append("\n");
-    //     descriptionBuilder.append("Containers: \n");
+        // descriptionBuilder.append("Node Name: ").append(pod.getSpec().getNodeName()).append("\n");
+        // descriptionBuilder.append("Service Account Name: ").append(pod.getSpec().getServiceAccountName()).append("\n");
+        // descriptionBuilder.append("Host Network: ").append(pod.getSpec().getHostNetwork()).append("\n");
+        // descriptionBuilder.append("Host PID: ").append(pod.getSpec().getHostPID()).append("\n");
+        // descriptionBuilder.append("Host IPC: ").append(pod.getSpec().getHostIPC()).append("\n");
+        // descriptionBuilder.append("Containers: \n");
 
-    //     // Ajouter plus d'informations au besoin
-    //     descriptionBuilder.append("Pod IP: ").append(pod.getStatus().getPodIP()).append("\n");
+        // // Ajouter plus d'informations au besoin
+        // descriptionBuilder.append("Pod IP: ").append(pod.getStatus().getPodIP()).append("\n");
 
-    //     // Include container details
-    //         // Containers
-    //     List<V1Container> containers = pod.getSpec().getContainers();
-    //     for (V1Container container : containers) {
-    //         descriptionBuilder.append("\tName: ").append(container.getName()).append("\n");
-    //         descriptionBuilder.append("\tImage: ").append(container.getImage()).append("\n");
-    //         descriptionBuilder.append("\tCommand: ").append(container.getCommand()).append("\n");
-    //         descriptionBuilder.append("\tArgs: ").append(container.getArgs()).append("\n");
-    //         descriptionBuilder.append("\tWorking Directory: ").append(container.getWorkingDir()).append("\n");
-    //         descriptionBuilder.append("\tPorts: ").append(container.getPorts()).append("\n");
-    //         descriptionBuilder.append("\tVolume Mounts: ").append(container.getVolumeMounts()).append("\n");
-    //         descriptionBuilder.append("\tResources: ").append(container.getResources()).append("\n");
-    //         descriptionBuilder.append("\tEnvironment Variables: ").append(container.getEnv()).append("\n");
-    //         descriptionBuilder.append("\n");
-    //     }
-    //     descriptionBuilder.append("Status: ").append(pod.getStatus().getPhase()).append("\n");
-    //     descriptionBuilder.append("Pod IP: ").append(pod.getStatus().getPodIP()).append("\n");
-    //     descriptionBuilder.append("Pod Host IP: ").append(pod.getStatus().getHostIP()).append("\n");
-    //     descriptionBuilder.append("Conditions: ").append(pod.getStatus().getConditions()).append("\n");
-    //     descriptionBuilder.append("Message: ").append(pod.getStatus().getMessage()).append("\n");
-    //     descriptionBuilder.append("Reason: ").append(pod.getStatus().getReason()).append("\n");
-    //     descriptionBuilder.append("StartTime: ").append(pod.getStatus().getStartTime()).append("\n");
-    //     descriptionBuilder.append("Deletion Timestamp: ").append(pod.getMetadata().getDeletionTimestamp()).append("\n");
+        // // Include container details
+        //     // Containers
+        // List<V1Container> containers = pod.getSpec().getContainers();
+        // for (V1Container container : containers) {
+        //     descriptionBuilder.append("\tName: ").append(container.getName()).append("\n");
+        //     descriptionBuilder.append("\tImage: ").append(container.getImage()).append("\n");
+        //     descriptionBuilder.append("\tCommand: ").append(container.getCommand()).append("\n");
+        //     descriptionBuilder.append("\tArgs: ").append(container.getArgs()).append("\n");
+        //     descriptionBuilder.append("\tWorking Directory: ").append(container.getWorkingDir()).append("\n");
+        //     descriptionBuilder.append("\tPorts: ").append(container.getPorts()).append("\n");
+        //     descriptionBuilder.append("\tVolume Mounts: ").append(container.getVolumeMounts()).append("\n");
+        //     descriptionBuilder.append("\tResources: ").append(container.getResources()).append("\n");
+        //     descriptionBuilder.append("\tEnvironment Variables: ").append(container.getEnv()).append("\n");
+        //     descriptionBuilder.append("\n");
+        // }
+        // descriptionBuilder.append("Status: ").append(pod.getStatus().getPhase()).append("\n");
+        // descriptionBuilder.append("Pod IP: ").append(pod.getStatus().getPodIP()).append("\n");
+        // descriptionBuilder.append("Pod Host IP: ").append(pod.getStatus().getHostIP()).append("\n");
+        // descriptionBuilder.append("Conditions: ").append(pod.getStatus().getConditions()).append("\n");
+        // descriptionBuilder.append("Message: ").append(pod.getStatus().getMessage()).append("\n");
+        // descriptionBuilder.append("Reason: ").append(pod.getStatus().getReason()).append("\n");
+        // descriptionBuilder.append("StartTime: ").append(pod.getStatus().getStartTime()).append("\n");
+        // descriptionBuilder.append("Deletion Timestamp: ").append(pod.getMetadata().getDeletionTimestamp()).append("\n");
         
-    //     if (pod.getMetadata().getOwnerReferences() != null && !pod.getMetadata().getOwnerReferences().isEmpty()) {
-    //         descriptionBuilder.append("Controlled By: ");
-    //         // Iterate through ownerReferences
-    //         for (V1OwnerReference ownerReference : pod.getMetadata().getOwnerReferences()) {
-    //             descriptionBuilder.append(ownerReference.getKind()).append("/").append(ownerReference.getName());
-    //             // If there are multiple ownerReferences, separate them with commas
-    //             if (!ownerReference.equals(pod.getMetadata().getOwnerReferences().get(pod.getMetadata().getOwnerReferences().size() - 1))) {
-    //                 descriptionBuilder.append(", ");
-    //             }
-    //         }
-    //     }
+        // if (pod.getMetadata().getOwnerReferences() != null && !pod.getMetadata().getOwnerReferences().isEmpty()) {
+        //     descriptionBuilder.append("Controlled By: ");
+        //     // Iterate through ownerReferences
+        //     for (V1OwnerReference ownerReference : pod.getMetadata().getOwnerReferences()) {
+        //         descriptionBuilder.append(ownerReference.getKind()).append("/").append(ownerReference.getName());
+        //         // If there are multiple ownerReferences, separate them with commas
+        //         if (!ownerReference.equals(pod.getMetadata().getOwnerReferences().get(pod.getMetadata().getOwnerReferences().size() - 1))) {
+        //             descriptionBuilder.append(", ");
+        //         }
+        //     }
+        // }
     //     return descriptionBuilder.toString();
     // }
 

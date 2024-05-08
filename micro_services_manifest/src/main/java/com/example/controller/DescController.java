@@ -25,13 +25,9 @@ public class DescController {
 
     @GetMapping("/{resourceType}/{ressourceName}")
     public ResponseEntity<String> getResourceDescriptions( @PathVariable String ressourceName,@PathVariable String resourceType) throws IOException, ApiException {
-        try {
             String description = DescService.getResourceDescriptions( ressourceName, resourceType);
             return ResponseEntity.ok(description);
-        } catch (ApiException e) {
-            // Handle API exception
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while fetching ressource description");
-        }    
+        
     }
 
       

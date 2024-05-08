@@ -23,7 +23,6 @@ import { MaterialDesignFrameworkModule } from '@ajsf/material';
 import { YmlFileComponent } from './yml-file/yml-file.component';
 import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
 import { ServiceTestComponent } from './service-test/service-test.component';
-import { NetworkVisualizationComponent } from './network-visualization/network-visualization.component';
 import { WorkloadDetailsComponent } from './workload-details/workload-details.component';
 import { DescComponent } from './manifest-desc/desc/desc.component';
 // import { MatDrawerModule } from '@angular/material/drawer';
@@ -34,8 +33,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
                   DemoRootComponent, 
                   YmlFileComponent, 
                   DynamicFormComponent, 
-                  ServiceTestComponent, 
-                  NetworkVisualizationComponent,
+                  ServiceTestComponent,
                   WorkloadDetailsComponent,
                   DescComponent
                   ],

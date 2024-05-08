@@ -1,14 +1,18 @@
-<div class="pod-description" *ngIf="resourceName">
+<div class="pod-description" *ngIf="resourceName" style="overflow-y: auto;">
   <label>Resource Name:</label>
   <input type="text" [(ngModel)]="resourceName" placeholder="Resource Name" disabled>
-  
+
+  <!-- <div>Resource Name: {{ resourceName }}</div>
+  <div>Resource Details: {{ resourceDetails | json }}</div> -->
+
   <div *ngFor="let detail of resourceDetails" class="detail">
     <label>{{ detail.title }}:</label>
-
+ 
     <input type="text" [(ngModel)]="detail.description" disabled>
-
+ 
     <!-- <span>{{ detail.description }}</span> -->
   </div>
   
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 </div>
+ 
