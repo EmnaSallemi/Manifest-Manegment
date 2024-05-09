@@ -31,7 +31,7 @@ public class ResponseController {
                 return ResponseEntity.ok("Pod created successfully ");
             } else if ("ConfigMap".equals(kind)) {
                 createResource.createConfigMap(response);
-                return ResponseEntity.ok("Service created successfully ");
+                return ResponseEntity.ok("ConfigMap created successfully ");
             } else if ("Deployment".equals(kind)) {
                 createResource.createDeployment(response);
                 return ResponseEntity.ok("Deployment created successfully ");

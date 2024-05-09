@@ -2,7 +2,7 @@ import { CreateResourceService } from '../services/create-resource.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Examples } from './example-schemas.model';
 import { JsonPointer } from '@ajsf/core';
@@ -70,7 +70,6 @@ export class DemoComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router,
     private CreateResourceService: CreateResourceService // Inject the CreateResourceService
   ) { }
   showRouteSelection: boolean = false;
@@ -103,7 +102,7 @@ export class DemoComponent implements OnInit {
   }
 
   onSubmit(data: any) {
-    // You can send the form data to the backend service here
+    // Send the form data to the backend service 
     this.CreateResourceService.createResource(data).subscribe(
       response => {
         console.log('Resource created successfully:', response);

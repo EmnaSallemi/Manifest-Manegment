@@ -72,15 +72,44 @@ public class CreateResourceFormImpl implements CreateResourceForm {
 
     @Override
     public void createConfigMap(String response) throws ApiException, IOException {
+        // Configure Kubernetes access
         kubernetesConfigService.configureKubernetesAccess();
+    
+        // Initialize Kubernetes API client
         CoreV1Api api = new CoreV1Api();
+    
+        // Parse JSON response
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(response);
     
+        // Extract ConfigMap metadata
         String name = jsonNode.get("metadata").get("name").asText();
         String namespace = jsonNode.get("metadata").get("namespace").asText();
     
-
+        // Extract ConfigMap data, if present
+        JsonNode dataNode = jsonNode.get("data");
+    
+        // Create ConfigMap object
+        V1ConfigMap configMap = new V1ConfigMapBuilder()
+                .withNewMetadata()
+                    .withName(name)
+                    .withNamespace(namespace)
+                .endMetadata()
+                .withImmutable(jsonNode.get("immutable").asBoolean())
+                .withData(dataNode != null ? toMap(dataNode) : null)
+                .build();
+    
+        // Deploy ConfigMap to cluster
+        api.createNamespacedConfigMap(namespace, configMap, null, null, null, null);
+        System.out.println("ConfigMap deployed successfully: " + name);
+    }
+    
+    private Map<String, String> toMap(JsonNode dataNode) {
+        Map<String, String> dataMap = new HashMap<>();
+        dataNode.fields().forEachRemaining(entry -> {
+            dataMap.put(entry.getKey(), entry.getValue().asText());
+        });
+        return dataMap;
     }
     
 
