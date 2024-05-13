@@ -1,21 +1,19 @@
 import { Route } from '@angular/router';
 import { DemoComponent } from './demo.component';
-import { YmlFileComponent } from './yml-file/yml-file.component';
-import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
-import { ServiceTestComponent} from './service-test/service-test.component';
 import { Component } from '@angular/core';
-import { WorkloadDetailsComponent } from './workload-details/workload-details.component';
-import { DescComponent } from './manifest-desc/desc/desc.component';
+import { ListComponent } from './workload-details/list/list.component';
+import { DesccComponent } from './workload-details/descc/descc.component';
+import { YmlFileComponent } from './addressource/yml-file/yml-file.component';
+import { DynamicFormComponent } from './addressource/dynamic-form/dynamic-form.component';
+
 export const routes: Route[] = [
   { path: '', 
     component: DemoComponent,
     children: [    ]  
   },
-  { path: 'ymlFile', component: YmlFileComponent },
-  { path: 'dynamicForm', component: DynamicFormComponent },
-  { path: 'servicetest', component: ServiceTestComponent },
-  { path: 'workload-details', component: WorkloadDetailsComponent},
-  { path: 'desc', component: DescComponent},
-  
+  { path: 'descressource', component: DesccComponent},
+  { path: 'listressource' , component: ListComponent},
+  { path: 'create-ymlfile' , component: YmlFileComponent},
+  { path: 'create-dynamicform' , component: DynamicFormComponent}
 
 ];

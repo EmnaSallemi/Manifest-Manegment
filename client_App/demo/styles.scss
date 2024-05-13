@@ -21,31 +21,10 @@ $row-height: 56px;
 
  
 
-.ace_active-line { background: none !important; }
- 
-// [ace-editor], .data-good, .data-bad {
-//   border-radius: 3px;
-//   padding: 6px;
-//   border: 1px solid #ccc !important;
-// }
  
 [ace-editor] { background-color: rgb(253, 253, 253) !important; }
  
-.avoidwrap { display:inline-block; }
- 
-.data-good { background-color: #dfd; }
- 
-.data-bad { background-color: #fcc; }
- 
-.default-cursor:hover { cursor: default; }
- 
-.check-row { margin-top: 8px; }
- 
-.cdk-overlay-container .cdk-overlay-pane .mat-menu-panel { max-width: 560px; }
- 
-.debug { border: 1px solid red !important; }
- 
-.mat-input-container.mat-form-field { width: 100%; }
+
  
 #resources {
   background-color: #1683ff; /* Blue color for the button */
@@ -61,4 +40,9 @@ body {
  
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

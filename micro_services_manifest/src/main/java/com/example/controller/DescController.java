@@ -26,8 +26,7 @@ public class DescController {
     @GetMapping("/{resourceType}/{ressourceName}")
     public ResponseEntity<String> getResourceDescriptions( @PathVariable String ressourceName,@PathVariable String resourceType) throws IOException, ApiException {
             String description = DescService.getResourceDescriptions( ressourceName, resourceType);
-            return ResponseEntity.ok(description);
-        
+        return ResponseEntity.ok(description);
     }
 
       

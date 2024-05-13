@@ -39,10 +39,11 @@ export class DemoComponent {
     console.log('Selected choice:', choice);
     
     if (choice === 'Yml File') {
-      this.router.navigate(['/ymlFile']); // Navigate to the new page for YAML file
-    }else if(choice== 'Form') {
-      this.router.navigate(['/dynamicForm']);
+      this.router.navigate(['/create-ymlfile']); 
+    }if (choice === 'Form') {
+      this.router.navigate(['/create-dynamicform']);
     }
+
 
     }
 }

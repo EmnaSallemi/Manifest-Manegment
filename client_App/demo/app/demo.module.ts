@@ -12,7 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AceEditorDirective } from './ace-editor.directive';
 import { DemoComponent } from './demo.component';
 import { DemoRootComponent } from './demo-root.component';
 import { routes } from './demo.routes';
@@ -20,27 +19,33 @@ import { JsonSchemaFormModule } from '@ajsf/core';
 import { Bootstrap4FrameworkModule } from '@ajsf/bootstrap4';
 import { Bootstrap3FrameworkModule } from '@ajsf/bootstrap3';
 import { MaterialDesignFrameworkModule } from '@ajsf/material';
-import { YmlFileComponent } from './yml-file/yml-file.component';
-import { DynamicFormComponent } from './dynamic-form/dynamic-form.component';
-import { ServiceTestComponent } from './service-test/service-test.component';
-import { WorkloadDetailsComponent } from './workload-details/workload-details.component';
-import { DescComponent } from './manifest-desc/desc/desc.component';
+import { YmlFileComponent } from './addressource/yml-file/yml-file.component';
 // import { MatDrawerModule } from '@angular/material/drawer';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ListComponent } from './workload-details/list/list.component';
+import { DesccComponent } from './workload-details/descc/descc.component';
+import { DynamicFormComponent } from './addressource/dynamic-form/dynamic-form.component';
+import { YmlFileUpdateComponent } from './updateressource/yml-file-update/yml-file-update.component';
+import { DynamicFormUpdateComponent } from './updateressource/dynamic-form-update/dynamic-form-update.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
+
+
 @NgModule({
-  declarations: [AceEditorDirective, 
+  declarations: [
                   DemoComponent, 
                   DemoRootComponent, 
                   YmlFileComponent, 
-                  DynamicFormComponent, 
-                  ServiceTestComponent,
-                  WorkloadDetailsComponent,
-                  DescComponent
+                  DesccComponent,
+                  ListComponent,
+                  DynamicFormComponent,
+                  YmlFileUpdateComponent,
+                  DynamicFormUpdateComponent,
                   ],
   imports: [
     
-    BrowserModule, BrowserAnimationsModule, FlexLayoutModule, FormsModule,
-    HttpClientModule, MatButtonModule, MatCardModule, MatCheckboxModule,
+    BrowserModule, BrowserAnimationsModule, FlexLayoutModule, FormsModule,MatChipsModule,
+    HttpClientModule, MatButtonModule, MatCardModule, MatCheckboxModule,MatDialogModule,
     MatIconModule, MatMenuModule, MatSelectModule, MatToolbarModule,
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }),
     Bootstrap4FrameworkModule,

@@ -23,5 +23,6 @@ public interface ListerService {
     public List<String> getAllStorageClasses() throws IOException, ApiException ;
     public List<String> getAllStatefulSets() throws IOException, ApiException ;
     public List<String> getPodDeploymentConnections() throws ApiException, FileNotFoundException, IOException ;  
-
+    public List<String> getAllPersistentVolumes() throws ApiException, IOException ;
+    
 }

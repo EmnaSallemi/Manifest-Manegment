@@ -25,8 +25,10 @@ import io.kubernetes.client.openapi.models.V1NamespaceList;
 import io.kubernetes.client.openapi.models.V1Node;
 import io.kubernetes.client.openapi.models.V1NodeList;
 import io.kubernetes.client.openapi.models.V1OwnerReference;
+import io.kubernetes.client.openapi.models.V1PersistentVolume;
 import io.kubernetes.client.openapi.models.V1PersistentVolumeClaim;
 import io.kubernetes.client.openapi.models.V1PersistentVolumeClaimList;
+import io.kubernetes.client.openapi.models.V1PersistentVolumeList;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodList;
 import io.kubernetes.client.openapi.models.V1ReplicaSet;
@@ -270,6 +272,23 @@ public class ListerServiceImpl implements ListerService{
         }
         return pvcNames;
     }
+
+    public List<String> getAllPersistentVolumes() throws ApiException, IOException {
+        
+            ApiClient client = KubernetesConfigService.configureKubernetesAccess();
+            CoreV1Api api = new CoreV1Api(client);
+
+            V1PersistentVolumeList pvList = api.listPersistentVolume(null, null, null, null, null, null, null, null, null, null);
+
+            List<String> pvNames = new ArrayList<>();
+            for (V1PersistentVolume pv : pvList.getItems()) {
+                pvNames.add(pv.getMetadata().getName());
+            }
+            return pvNames;
+      
+    }
+    
+
     public List<String> getAllStorageClasses() throws IOException, ApiException {
         ApiClient client =KubernetesConfigService.configureKubernetesAccess();
         StorageV1Api api = new StorageV1Api(client);

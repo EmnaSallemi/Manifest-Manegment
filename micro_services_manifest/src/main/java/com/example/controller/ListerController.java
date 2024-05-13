@@ -68,7 +68,7 @@ public class ListerController {
         List<String> jobs = ListerService.getAllJobs();
         return new ResponseEntity<>(jobs,HttpStatus.OK);
     }
-    @GetMapping("/nodes")
+    @GetMapping("/node")
     public ResponseEntity<List<String>> listNodes() throws IOException, ApiException {
         List<String> nodes = ListerService.getAllNodes();
         return new ResponseEntity<>(nodes,HttpStatus.OK);
@@ -107,6 +107,11 @@ public class ListerController {
     public ResponseEntity<List<String>> getAllStateful() throws IOException, ApiException {
         List<String> stateful = ListerService.getAllStatefulSets();
         return new ResponseEntity<>(stateful,HttpStatus.OK);
+    }
+    @GetMapping("/persistentvolume")
+    public ResponseEntity<List<String>> getAllPersistentVolumes() throws IOException, ApiException {
+        List<String> persistentvolume = ListerService.getAllPersistentVolumes();
+        return new ResponseEntity<>(persistentvolume,HttpStatus.OK);
     }
     @GetMapping("/connection")
     public ResponseEntity<List<String>> getPodDeploymentConnections() throws IOException, ApiException {
