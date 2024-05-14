@@ -14,6 +14,6 @@ export const routes: Route[] = [
   { path: 'descressource', component: DesccComponent},
   { path: 'listressource' , component: ListComponent},
   { path: 'create-ymlfile' , component: YmlFileComponent},
-  { path: 'create-dynamicform' , component: DynamicFormComponent}
+  { path: 'create-dynamicform' , component: DynamicFormComponent},
 
 ];

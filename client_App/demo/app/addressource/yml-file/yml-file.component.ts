@@ -1,41 +1,37 @@
 import { Component, OnInit } from '@angular/core';
+import { CreateressourceService } from '../service/createressource.service';
 
 @Component({
   selector: 'app-yml-file',
   templateUrl: './yml-file.component.html',
   styleUrls: ['./yml-file.component.scss']
 })
-export class YmlFileComponent implements OnInit {
+export class YmlFileComponent {
+  successMessage: string;
 
-  constructor() { }
+  constructor(private createressourceService: CreateressourceService) { }
 
-  ngOnInit(): void {
-  }
-
-  fileName!: string;
-  http: any;
-
-
-  OnChangeFile(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const files = inputElement.files;
-  
-    if (files && files.length > 0) {
-      const file: File = files[0];
-      this.fileName = file.name;
-  
-      const formData = new FormData();
-      formData.append("thumbnail", file);
-  
-      const upload$ = this.http.post("/api/thumbnail-upload", formData);
-      upload$.subscribe();
+  onSubmit() {
+    const fileInput = document.getElementById('fileInputAlt') as HTMLInputElement;
+    const file = fileInput.files[0];
+    if (file) {
+      this.sendYamlToBackend(file); 
     }
   }
-  
 
-  manifestList: string[] = ['Pod', 'Deployment', 'ReplicaSet', 'Service', 'StatefulSet','ConfigMap', 'DeamonSet'];
+  private sendYamlToBackend(file: File) {
+    const formData = new FormData();
+    formData.append('yamlFile', file); 
 
-  selectedManifest: string = '';
-  manifestData: any;
+    this.createressourceService.addResource(formData).subscribe(
+      response => {
+        this.successMessage = 'Resource added successfully';
+        console.log('Resource added successfully:', response);
+      },
+      error => {
+        console.error('Error adding resource:', error);
+      }
+    );
+  }
 
 }
